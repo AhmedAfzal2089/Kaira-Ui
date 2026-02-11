@@ -1,14 +1,25 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, Mic } from 'lucide-react';
+import { Send, Mic, MicOff } from 'lucide-react';
 
 interface ChatInputProps {
   onSend: (text: string) => void;
   disabled: boolean;
 }
 
+// Add type definition for Web Speech API
+declare global {
+  interface Window {
+    SpeechRecognition: any;
+    webkitSpeechRecognition: any;
+  }
+}
+
 const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
   const [input, setInput] = useState('');
+  const [isListening, setIsListening] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const recognitionRef = useRef<any>(null);
 
   useEffect(() => {
     if (textareaRef.current) {
@@ -16,6 +27,50 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
       textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
     }
   }, [input]);
+
+  useEffect(() => {
+    // Initialize Speech Recognition
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (SpeechRecognition) {
+      recognitionRef.current = new SpeechRecognition();
+      recognitionRef.current.continuous = true;
+      recognitionRef.current.interimResults = true;
+      recognitionRef.current.lang = 'en-US';
+
+      recognitionRef.current.onresult = (event: any) => {
+        const lastResult = event.results[event.results.length - 1];
+        
+        if (lastResult.isFinal) {
+          const text = lastResult[0].transcript;
+          setInput((prev) => prev + (prev ? ' ' : '') + text);
+        }
+      };
+
+      recognitionRef.current.onend = () => {
+        setIsListening(false);
+      };
+      
+      recognitionRef.current.onerror = (event: any) => {
+          console.error("Speech recognition error", event.error);
+          setIsListening(false);
+      };
+    }
+  }, []);
+
+  const toggleListening = () => {
+    if (!recognitionRef.current) {
+      alert("Browser does not support speech recognition.");
+      return;
+    }
+
+    if (isListening) {
+      recognitionRef.current.stop();
+      setIsListening(false);
+    } else {
+      recognitionRef.current.start();
+      setIsListening(true);
+    }
+  };
 
   const handleSubmit = (e?: React.FormEvent) => {
     e?.preventDefault();
@@ -38,13 +93,13 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
   return (
     <div className="w-full max-w-3xl mx-auto px-4">
       <form onSubmit={handleSubmit} className="relative">
-        <div className="relative bg-[#1a1a1a] rounded-2xl border border-gray-800 focus-within:border-gray-700 transition-colors shadow-lg">
+        <div className={`relative bg-[#1a1a1a] rounded-2xl border transition-colors shadow-lg ${isListening ? 'border-red-500/50' : 'border-gray-800 focus-within:border-gray-700'}`}>
           <textarea
             ref={textareaRef}
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder="Ask Kaira anything..."
+            placeholder={isListening ? "Listening..." : "Ask Kaira anything..."}
             disabled={disabled}
             rows={1}
             className="w-full bg-transparent text-white placeholder-gray-500 p-4 pb-12 outline-none resize-none max-h-48 rounded-2xl disabled:opacity-50"
@@ -54,10 +109,11 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
           <div className="absolute left-4 bottom-4">
             <button
               type="button"
-              className="p-2 text-gray-500 hover:text-white transition-colors rounded-lg hover:bg-gray-800/50"
-              title="Voice input"
+              onClick={toggleListening}
+              className={`p-2 transition-colors rounded-lg ${isListening ? 'text-red-500 bg-red-500/10 hover:bg-red-500/20' : 'text-gray-500 hover:text-white hover:bg-gray-800/50'}`}
+              title={isListening ? "Stop listening" : "Start voice input"}
             >
-              <Mic size={20} />
+              {isListening ? <MicOff size={20} /> : <Mic size={20} />}
             </button>
           </div>
 

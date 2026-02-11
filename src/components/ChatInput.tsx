@@ -102,18 +102,18 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
             placeholder={isListening ? "Listening..." : "Ask Kaira anything..."}
             disabled={disabled}
             rows={1}
-            className="w-full bg-transparent text-white placeholder-gray-500 p-4 pb-12 outline-none resize-none max-h-48 rounded-2xl disabled:opacity-50"
-            style={{ minHeight: '80px' }}
+            className="w-full bg-transparent text-white placeholder-gray-500 p-3 md:p-4 pb-10 md:pb-12 outline-none resize-none max-h-48 rounded-2xl disabled:opacity-50 text-sm md:text-base"
+            style={{ minHeight: '60px' }}
           />
           
-          <div className="absolute left-4 bottom-4">
+          <div className="absolute left-3 bottom-3 md:left-4 md:bottom-4">
             <button
               type="button"
               onClick={toggleListening}
               className={`p-2 transition-colors rounded-lg ${isListening ? 'text-red-500 bg-red-500/10 hover:bg-red-500/20' : 'text-gray-500 hover:text-white hover:bg-gray-800/50'}`}
               title={isListening ? "Stop listening" : "Start voice input"}
             >
-              {isListening ? <MicOff size={20} /> : <Mic size={20} />}
+              {isListening ? <MicOff size={18} /> : <Mic size={18} />}
             </button>
           </div>
 

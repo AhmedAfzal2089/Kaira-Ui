@@ -1,14 +1,11 @@
 import React from 'react';
-import KairaAvatar from '../assets/kaira.jpeg';
 import KOSLogo from '../assets/KOS.png';
 
 const ChatHeader: React.FC = () => {
   return (
     <div className="p-4 md:p-8 flex flex-col items-center justify-center text-center max-w-2xl mx-auto w-full">
       <div className="flex items-center justify-center gap-3 md:gap-4 mb-4 md:mt-2">
-       <div className="w-16 h-16 md:w-32 md:h-20 rounded-xl md:rounded-2xl overflow-hidden shadow-sm border border-gray-800 shrink-0">
-         <img src={KairaAvatar} alt="Kaira" className="w-full h-full object-cover" />
-      </div>
+      
        <div className="h-12 md:h-14 flex items-center shrink-0">
           <img src={KOSLogo} alt="KOS" className="h-full object-contain" />
        </div>

@@ -13,12 +13,12 @@ const SUGGESTIONS = [
 
 const SuggestionPills: React.FC<SuggestionPillsProps> = ({ onSelect }) => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-6">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8 w-full max-w-3xl mx-auto px-4">
       {SUGGESTIONS.map((text, index) => (
         <button
           key={index}
           onClick={() => onSelect(text)}
-          className="text-left p-3 rounded-lg border border-gray-700 bg-gray-900/50 hover:bg-gray-800 hover:border-gray-600 transition-all text-sm text-gray-200"
+          className="text-left p-4 rounded-xl border border-gray-800 bg-[#1a1a1a] hover:bg-[#252525] hover:border-gray-700 transition-all text-sm text-gray-200 shadow-sm"
         >
           {text}
         </button>

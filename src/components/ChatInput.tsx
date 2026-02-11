@@ -36,44 +36,46 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="relative">
-      <div className="relative bg-gray-800 rounded-xl border border-gray-700 focus-within:border-blue-500 transition-colors">
-        <textarea
-          ref={textareaRef}
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={handleKeyDown}
-          placeholder="Ask Kaira anything..."
-          disabled={disabled}
-          rows={1}
-          className="w-full bg-transparent text-white placeholder-gray-400 p-4 pr-24 outline-none resize-none max-h-32 rounded-xl disabled:opacity-50"
-          style={{ minHeight: '56px' }}
-        />
-        
-        <div className="absolute right-2 bottom-2 flex items-center gap-1">
-          <button
-            type="button"
-            className="p-2 text-gray-400 hover:text-white transition-colors rounded-lg hover:bg-gray-700"
-            title="Voice input (coming soon)"
-          >
-            <Mic size={20} />
-          </button>
+    <div className="w-full max-w-3xl mx-auto px-4">
+      <form onSubmit={handleSubmit} className="relative">
+        <div className="relative bg-[#1a1a1a] rounded-2xl border border-gray-800 focus-within:border-gray-700 transition-colors shadow-lg">
+          <textarea
+            ref={textareaRef}
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={handleKeyDown}
+            placeholder="Ask Kaira anything..."
+            disabled={disabled}
+            rows={1}
+            className="w-full bg-transparent text-white placeholder-gray-500 p-4 pb-12 outline-none resize-none max-h-48 rounded-2xl disabled:opacity-50"
+            style={{ minHeight: '80px' }}
+          />
           
-          {input.trim() && (
+          <div className="absolute left-4 bottom-4">
+            <button
+              type="button"
+              className="p-2 text-gray-500 hover:text-white transition-colors rounded-lg hover:bg-gray-800/50"
+              title="Voice input"
+            >
+              <Mic size={20} />
+            </button>
+          </div>
+
+          <div className="absolute right-4 bottom-4">
             <button
               type="submit"
-              disabled={disabled}
-              className="p-2 bg-blue-600 text-white rounded-lg hover:bg-blue-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={disabled || !input.trim()}
+              className="p-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-all disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-gray-800"
             >
-              <Send size={20} />
+              <Send size={18} />
             </button>
-          )}
+          </div>
         </div>
-      </div>
-      <p className="text-center text-[10px] text-gray-500 mt-2">
-        AI-powered assistant. Messages may be monitored for quality assurance.
-      </p>
-    </form>
+        <p className="text-center text-[10px] text-gray-500 mt-3 font-medium">
+          Al-powered assistant. Messages may be monitored for quality assurance.
+        </p>
+      </form>
+    </div>
   );
 };
 

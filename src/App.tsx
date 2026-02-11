@@ -4,20 +4,20 @@ import { useChat } from './hooks/useChat';
 import AlmaTag from './assets/Alma_White_Tag_XL.png';
 
 function App() {
-  const { messages, isLoading, sendMessage, resetSession } = useChat();
+  const { messages, isLoading, sendMessage } = useChat();
 
   return (
-    <div className="min-h-screen bg-black flex flex-col items-center justify-center p-4 md:p-4">
+    <div className="h-screen w-screen bg-black flex flex-col items-center overflow-hidden p-4">
       {/* Global Header */}
-      <div className="flex justify-center mb-8">
-         <img src={AlmaTag} alt="ALMATIQ" className="h-40 object-contain" />
+      <div className="flex-none justify-center mb-6">
+         <img src={AlmaTag} alt="ALMATIQ" className="h-32 object-contain" />
       </div>
 
-      <div className="w-full max-w-[1400px] h-[80vh] flex flex-col lg:flex-row gap-6">
+      <div className="w-full max-w-[1400px] flex-1 min-h-0 flex flex-col lg:flex-row gap-6">
         
-        {/* Left Panel - White Card */}
+        {/* Left Panel - Dark Card */}
         <div className="lg:w-[40%] w-full h-1/3 lg:h-full">
-           <LeftPanel onResetSession={resetSession} />
+           <LeftPanel />
         </div>
 
         {/* Chat Panel - Dark Card */}

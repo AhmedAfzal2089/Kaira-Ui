@@ -4,7 +4,7 @@ import { useChat } from './hooks/useChat';
 import AlmaTag from './assets/Alma_White_Tag_XL.png';
 
 function App() {
-  const { messages, isLoading, sendMessage } = useChat();
+  const { messages, isLoading, sendMessage, resetSession } = useChat();
 
   return (
     <div className="h-screen w-screen bg-black flex flex-col items-center overflow-hidden p-4">
@@ -26,6 +26,7 @@ function App() {
             messages={messages} 
             isLoading={isLoading} 
             onSendMessage={sendMessage} 
+            onClear={resetSession}
           />
         </div>
 

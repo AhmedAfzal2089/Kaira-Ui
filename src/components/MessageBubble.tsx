@@ -1,6 +1,7 @@
 import React from 'react';
 import type { Message } from '../types';
-import { Bot, User } from 'lucide-react';
+import { User } from 'lucide-react';
+import chatAvatar from '../assets/chat_avatar.jpeg';
 
 interface MessageBubbleProps {
   message: Message;
@@ -19,7 +20,11 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ message }) => {
         {isUser ? (
           <User size={16} className="text-gray-400" />
         ) : (
-          <Bot size={16} className="text-gray-400" />
+          <img 
+            src={chatAvatar} 
+            alt="AI Assistant" 
+            className="w-full h-full rounded-full object-cover"
+          />
         )}
       </div>
       

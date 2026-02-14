@@ -8,36 +8,46 @@ import { v4 as uuidv4 } from 'uuid';
 const parseBotResponse = (data: any): string => {
   if (data === null || data === undefined) return '';
 
-  // If it's a string, try to parse it as JSON
-  if (typeof data === 'string') {
-    try {
-      const parsed = JSON.parse(data);
-      // If parsing succeeds and results in an object or a different string, recurse
-      if (typeof parsed === 'object' || (typeof parsed === 'string' && parsed !== data)) {
-        return parseBotResponse(parsed);
-      }
-    } catch {
-      // Not JSON, return as is
-      return data;
+  // Handle Array: [ { output: "..." } ]
+  if (Array.isArray(data)) {
+    if (data.length > 0) {
+      return parseBotResponse(data[0]);
     }
-    return data;
+    return '';
   }
 
-  // If it's an object, check for common fields
+  // Handle Object
   if (typeof data === 'object') {
+    // Check specific fields in order of likelihood
     if (data.output) return parseBotResponse(data.output);
     if (data.message) return parseBotResponse(data.message);
     if (data.text) return parseBotResponse(data.text);
     if (data.content) return parseBotResponse(data.content);
     if (data.response) return parseBotResponse(data.response);
     
-    // If it's an array, check the first item
-    if (Array.isArray(data) && data.length > 0) {
-      return parseBotResponse(data[0]);
-    }
-
-    // Fallback: stringify the object if no text field found
+    // If we have an object but none of the known fields, 
+    // it might be the leaf node if we want to stringify it,
+    // OR we might want to return it as is if it's not a known structure?
+    // But the user's case is { "output": "..." } which is caught above.
+    
+    // Use JSON stringify as fallback for unknown objects so we see something
     return JSON.stringify(data);
+  }
+
+  // Handle String (potentially stringified JSON)
+  if (typeof data === 'string') {
+    // Try to parse if it looks like a JSON object/array
+    if (data.trim().startsWith('{') || data.trim().startsWith('[')) {
+        try {
+            const parsed = JSON.parse(data);
+            if (typeof parsed === 'object') {
+                return parseBotResponse(parsed);
+            }
+        } catch {
+            // Not JSON, return original string
+        }
+    }
+    return data;
   }
 
   return String(data);

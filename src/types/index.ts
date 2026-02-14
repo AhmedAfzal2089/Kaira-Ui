@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export interface Message {
   id: string;
   text: string;
@@ -17,8 +18,8 @@ export interface WebhookPayload {
 }
 
 export interface WebhookResponse {
-  output?: string;
-  message?: string;
-  text?: string;
-  [key: string]: unknown;
+  output?: any;
+  message?: any;
+  text?: any;
+  [key: string]: any;
 }

@@ -31,8 +31,8 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ message }) => {
       <div
         className={`max-w-[80%] rounded-2xl px-4 py-3 text-sm leading-relaxed border border-gray-800 ${
           isUser
-            ? 'bg-[#1a1a1a] text-gray-200 rounded-tr-sm'
-            : 'bg-[#1a1a1a] text-gray-200 rounded-tl-sm'
+            ? 'bg-[#1a1a1a] text-gray-200 rounded-tr-sm whitespace-pre-wrap'
+            : 'bg-[#1a1a1a] text-gray-200 rounded-tl-sm whitespace-pre-wrap'
         }`}
       >
         {message.text}
